@@ -10,9 +10,9 @@
         </header>
 
         <ul class="list-item">
-          <li v-for="(job, index) in jobs" :key="index" class="item">
+          <li v-for="(job, index) in jobs" :key="job.id" class="item">
             <div class="left">
-              <input type="checkbox" v-model="job.completed" />
+              <input type="checkbox" v-model="job.completed" @change="updateLocalStorage" />
               <label :class="{ completed: job.completed }">{{ job.name }}</label>
             </div>
             <div class="right">
@@ -31,29 +31,37 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
-// Khai báo trạng thái
 const inputValue = ref('');
-const jobs = ref([]);
+const jobs = ref(JSON.parse(localStorage.getItem("jobs")) || []);
 
-// Thêm công việc
+const updateLocalStorage = () => {
+  localStorage.setItem('jobs', JSON.stringify(jobs.value));
+};
+
 const handleAddJob = () => {
   if (inputValue.value.trim() !== '') {
-    jobs.value.push({ name: inputValue.value, completed: false });
+    jobs.value.push({
+      name: inputValue.value,
+      completed: false,
+      id: Math.ceil(Math.random() * 98888888888),
+    });
     inputValue.value = '';
+    updateLocalStorage();
   }
 };
 
-// Xóa công việc
 const handleDeleteJob = (index) => {
   jobs.value.splice(index, 1);
+  updateLocalStorage();
 };
 
-// Tính số công việc hoàn thành
 const completedJobs = computed(() => {
   return jobs.value.filter(job => job.completed).length;
 });
+
+watch(jobs, updateLocalStorage, { deep: true });
 </script>
 
 <style scoped>

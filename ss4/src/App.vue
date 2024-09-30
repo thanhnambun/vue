@@ -52,7 +52,7 @@ const userInfo = {
     <Bt10></Bt10>
   </div>
 </template>
-<script>
+<script setup>
 
 import Bt2 from './components/bt2/Bt2.vue';
 import Bt3 from './components/bt3/Bt3.vue';

@@ -12,7 +12,7 @@
     <Bt10/>
   </div>
 </template>
-<script>
+<script setup>
 import Bt1 from './components/Bt1.vue';
 import Bt2 from './components/Bt2.vue';
 import Bt3 from './components/Bt3.vue';
